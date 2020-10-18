@@ -4,7 +4,7 @@
 #include "../rvdraw/rvdraw.h"
 
 #include <sys/time.h>
-//ceshimakeko
+
 extern int agentBodyType;
 
 // The names of important kicking parameters
