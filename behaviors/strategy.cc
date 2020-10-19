@@ -243,9 +243,50 @@ int NaoBehavior::findClosestPlayer2Ball()
     }
     return minNum;	//示例，返回11号，有需要请自行修改；
 }
+//找到离当前球员最近的队友
+int NaoBehavior::findClosetTeamateToMe(){
+    int thisPlayer=worldModel->getUNum();
+    int minNum=1;
+    float minDistance=100;
+    for(int i=WO_TEAMMATE1;i<=WO_TEAMMATE11;i++){
+        if(i!=thisPlayer){
+            float tDis=me.getDistanceTo(worldModel->getTeammate(i));
+            if(tDis<minDistance){
+                minNum=i;
+                minDistance=tDis;
+            }
+        }
+    }
+    return minNum;
+}
 
-
-
+//找到离对面球门最近的队友
+int NaoBehavior::findClosetTeamateToGoal(){
+    VecPosition goal = VecPosition(15,0,0);
+    int minNum = 1;
+    float minDistance = 100;
+    for(int i=WO_TEAMMATE1;i<=WO_TEAMMATE11;i++){
+        float tDis = worldModel->getTeammate(i).getDistanceTo(goal);
+        if(tDis<minDistance){
+            minNum=i;
+            minDistance=tDis;
+        }
+    }
+    return minNum;
+}
+//找到对手离球最近的球员
+int NaoBehavior::findClosetOpponentToball(){
+    int minNum = 12;
+    float minDistance = 100;
+    for(int i=WO_OPPONENT1;i<=WO_OPPONENT11;i++){
+        float tDis = worldModel->getOpponent(i).getDistanceTo(ball);
+        if(tDis<minDistance){
+            minNum=i;
+            minDistance=tDis;
+        }
+    }
+    return minNum;
+}
 
 //示例阵型
 
