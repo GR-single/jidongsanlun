@@ -102,6 +102,7 @@ void NaoBehavior::beam( double& beamX, double& beamY, double& beamAngle ) {
 
 SkillType NaoBehavior::selectSkill()
 {
+    //return SKILL_STAND;
     //return myTry();
     //示例，有需要请自行修改
     //worldModel->getRVSender()->clear(); // erases drawings from previous cycle
@@ -260,9 +261,10 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
     deam_position.push_back(VecPosition(diXian+3,y,0));
     deam_position.push_back(VecPosition(diXian+2,y+3,0));
     deam_position.push_back(VecPosition(diXian,y+4,0));
-    for(int i=0;i<5;i++){
-        deam_position.push_back(VecPosition(x-3,y-4+i,0));
-    }
+    deam_position.push_back(VecPosition(x-3,y+2,0));
+    deam_position.push_back(VecPosition(x-3,y-2,0));
+    deam_position.push_back(VecPosition(x+3,y+2,0));
+    deam_position.push_back(VecPosition(x+3,y-2,0));
 
     //检测是否越界
     for(int i=0;i<=(int)deam_position.size();i++)
