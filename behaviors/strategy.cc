@@ -202,7 +202,7 @@ SkillType NaoBehavior::kickOff()
 	**************参赛者自己编写*************
 	****************************************/
     if(worldModel->getUNum() == findClosestPlayer2Ball())
-        return kickBall(KICK_FORWARD,VecPosition(15,0,0));
+        return kickBall(KICK_IK,VecPosition(-5,5,0));
     else
         return SKILL_STAND;	//示例，站着不动，有需要请自行修改
     }
