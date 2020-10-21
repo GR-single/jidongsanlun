@@ -247,7 +247,9 @@ protected:
     int findClosetTeamateToMe();
     int findClosetTeamateToGoal();
     int findClosetOpponentToball();
-    
+    VecPosition findMidPoint(VecPosition a,VecPosition b);
+    void fangShouGuoXian(vector<VecPosition> & a);
+
     //keeper
     SkillType selectKeeperSkills(VecPosition teammateball,double distance,double angle);
     SkillType goBack(VecPosition myPos,double deg);

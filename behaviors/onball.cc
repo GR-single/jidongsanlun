@@ -23,7 +23,7 @@ SkillType NaoBehavior::onball()
       goal.setY(goal.getY()+0.3);
     }
     int thisPlayer=worldModel->getUNum();
-    if(thisPlayer==1||thisPlayer==2||thisPlayer==7||thisPlayer==8||thisPlayer==11){
+    if(thisPlayer!=7&&thisPlayer!=8&&thisPlayer!=11){
       canShootDistance=10;
     }
     else{

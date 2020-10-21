@@ -544,7 +544,7 @@ VecPosition NaoBehavior::navigateAroundBall(VecPosition target, double PROXIMITY
 SkillType NaoBehavior::LongKick(VecPosition target)
 {
     int num=worldModel->getUNum();
-    if(num==1||num==2||num==7||num==8||num==11)//在此写入想要能踢大脚的机器人的编号，此大脚仅type0与type2机器人可使用，如需要可添加更多方式的长踢
+    if(num!=7&&num!=8&&num!=11)//在此写入想要能踢大脚的机器人的编号，此大脚仅type0与type2机器人可使用，如需要可添加更多方式的长踢
     {
         return kickBall(DAJIAO,target);
     }

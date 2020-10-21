@@ -288,6 +288,19 @@ int NaoBehavior::findClosetOpponentToball(){
     return minNum;
 }
 
+VecPosition NaoBehavior::findMidPoint(VecPosition a,VecPosition b){
+    return VecPosition((a.getX()+b.getX())/2,(a.getY()+b.getY())/2,0);
+}
+
+void NaoBehavior::fangShouGuoXian(vector<VecPosition> & a){
+    for(int i=WO_OPPONENT2;i<=WO_OPPONENT11;i++){
+        VecPosition o=worldModel->getOpponent(i);
+        if(o.getX()<-5){
+            a[i]=(VecPosition(o.getX()+0.5,o.getY(),0));
+        }
+    }
+}
+
 //示例阵型
 
 vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
@@ -296,16 +309,18 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
     deam_position.clear();
     float x = ball.getX();
     float y = ball.getY();
-    float diXian = -12.5;
+    float diXian = -10;
     deam_position.push_back(VecPosition(diXian,y-4,0));
     deam_position.push_back(VecPosition(diXian+2,y-3,0));
     deam_position.push_back(VecPosition(diXian+3,y,0));
     deam_position.push_back(VecPosition(diXian+2,y+3,0));
     deam_position.push_back(VecPosition(diXian,y+4,0));
+    fangShouGuoXian(deam_position);
     deam_position.push_back(VecPosition(x-4,y+2,0));
+    deam_position.push_back(VecPosition(x+4,y-4,0));
     deam_position.push_back(VecPosition(x-3,y-2,0));
     deam_position.push_back(VecPosition(x+3,y+2,0));
-    deam_position.push_back(VecPosition(x+4,y-4,0));
+    
 
     //检测是否越界
     for(int i=0;i<=(int)deam_position.size();i++)
@@ -363,10 +378,18 @@ vector<VecPosition> NaoBehavior::demoMode_2(VecPosition ball)
     //示例，有需要请自行修改
     deam_position.clear();
     float x = ball.getX();
-
-    for(int i=0;i<9;i++){
-        deam_position.push_back(VecPosition(-7.5,-4+i,0));
-    }
+    float y = ball.getY();
+    VecPosition oob =worldModel->getOpponent(findClosetOpponentToball());
+    float diXian = -12.5;
+    deam_position.push_back(findMidPoint(oob,VecPosition(-15,0,0)));
+    deam_position.push_back(VecPosition(diXian,y-4,0));
+    deam_position.push_back(VecPosition(diXian+2,y-3,0));
+    deam_position.push_back(VecPosition(diXian+3,y,0));
+    deam_position.push_back(VecPosition(diXian+2,y+3,0));
+    deam_position.push_back(VecPosition(diXian,y+4,0));
+    deam_position.push_back(findMidPoint(ball,VecPosition(15,0,0)));
+    deam_position.push_back(VecPosition(x+7,y,0));
+    deam_position.push_back(VecPosition(x+10,y,0));
 
     //检测是否越界
     for(int i=0;i<=(int)deam_position.size();i++)
