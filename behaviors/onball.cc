@@ -13,10 +13,10 @@ SkillType NaoBehavior::onball()
      **************************/
     float canShootDistance;
     VecPosition goal=VecPosition(15,0,0);
-    VecPosition cttg=worldModel->getTeammate(findClosetTeamateToGoal());
-    VecPosition cttm=worldModel->getTeammate(findClosetTeamateToMe());
-    VecPosition cotb=worldModel->getOpponent(findClosetOpponentToball());
-    if(worldModel->getOpponent(WO_OPPONENT1).getY()>0){
+    VecPosition cttg=worldModel->getTeammate(findClosetTeamateToGoal());//离球门最近的队友
+    VecPosition cttm=worldModel->getTeammate(findClosetTeamateToMe());//离当前球员最近的队友
+    VecPosition cotb=worldModel->getOpponent(findClosetOpponentToball());//离球最近的对手球员
+    if(worldModel->getOpponent(WO_OPPONENT1).getY()>0){//根据守门员的位置判断射上半球门或下半球门
       goal.setY(goal.getY()-0.3);
     }
     else{
@@ -29,16 +29,18 @@ SkillType NaoBehavior::onball()
     else{
       canShootDistance=7;
     }
-    if(thisPlayer==findClosetTeamateToGoal()){
-      if(me.getDistanceTo(goal)<=canShootDistance)
+    if(thisPlayer==findClosetTeamateToGoal()){//当前球员离球门最近时
+      if(me.getDistanceTo(goal)<=canShootDistance)//能射就射
         return LongKick(goal);
-      return kickBall(KICK_DRIBBLE,VecPosition(15,0,0));
+      return kickBall(KICK_DRIBBLE,VecPosition(15,0,0));//不能射带球
     }
     else{
       if(me.getDistanceTo(goal)<=canShootDistance)
         return LongKick(goal);
-      
-      return ShortKick(VecPosition(cttg.getX()+0.3,cttg.getY(),0));
+      if(me.getDistanceTo(cttg)<5)//传给cttg时判断传球距离
+        return ShortKick(VecPosition(cttg.getX()+0.3,cttg.getY(),0));
+      else if(me.getDistanceTo(cttg)<8) return kickBall(KICK_FORWARD,VecPosition(cttg.getX()+0.3,cttg.getY(),0));
+      else return LongKick(VecPosition(cttg.getX()+0.3,cttg.getY(),0));
     }
     
     
