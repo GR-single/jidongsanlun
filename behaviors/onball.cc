@@ -27,19 +27,17 @@ SkillType NaoBehavior::onball()
       canShootDistance=10;
     }
     else{
-      canShootDistance=7;
+      canShootDistance=6;
     }
-    if(thisPlayer==findClosetTeamateToGoal()){//当前球员离球门最近时
-      if(me.getDistanceTo(goal)<=canShootDistance)//能射就射
+    if(me.getDistanceTo(goal)<=canShootDistance)//能射就射
         return LongKick(goal);
+    if(thisPlayer==findClosetTeamateToGoal()){//当前球员离球门最近时
       return kickBall(KICK_DRIBBLE,VecPosition(15,0,0));//不能射带球
     }
     else{
-      if(me.getDistanceTo(goal)<=canShootDistance)
-        return LongKick(goal);
-      if(me.getDistanceTo(cttg)<5)//传给cttg时判断传球距离
+      if(me.getDistanceTo(cttg)<2)//传给cttg时判断传球距离
         return ShortKick(VecPosition(cttg.getX()+0.3,cttg.getY(),0));
-      else if(me.getDistanceTo(cttg)<8) return kickBall(KICK_FORWARD,VecPosition(cttg.getX()+0.3,cttg.getY(),0));
+      else if(me.getDistanceTo(cttg)<7) return kickBall(KICK_FORWARD,VecPosition(cttg.getX()+0.3,cttg.getY(),0));
       else return LongKick(VecPosition(cttg.getX()+0.3,cttg.getY(),0));
     }
     

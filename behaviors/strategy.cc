@@ -185,10 +185,10 @@ SkillType NaoBehavior::myTry(){
     int nearestPlayer=findClosestPlayer2Ball();
     int thisPlayer=worldModel->getUNum();
     if(thisPlayer==nearestPlayer){
-        return LongKick();
+        return ShortKick();
     }
     else{
-        return goToTarget(VecPosition(worldModel->getBall().getX()-5,worldModel->getMyPosition().getY(),0));
+        return SKILL_STAND;
     }
 }
 //开球站位
@@ -305,22 +305,22 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
     deam_position.push_back(VecPosition(x-4,y+2,0));
     deam_position.push_back(VecPosition(x-3,y-2,0));
     deam_position.push_back(VecPosition(x+3,y+2,0));
-    deam_position.push_back(VecPosition(x+4,y-2,0));
+    deam_position.push_back(VecPosition(x+4,y-4,0));
 
     //检测是否越界
     for(int i=0;i<=(int)deam_position.size();i++)
     {
         if(deam_position[i].getY() >= 0.0)
         {
-            if(deam_position[i].getX()  >= 15.0 && deam_position[i].getY() <10.0)
+            if(deam_position[i].getX()  >= 14.5 && deam_position[i].getY() <10.0)
             {
                 deam_position[i].setX(14.0);
             }
-            else if(deam_position[i].getX()  < 15.0 && deam_position[i].getY() >=10.0)
+            else if(deam_position[i].getX()  < 14.5 && deam_position[i].getY() >=10.0)
             {
                 deam_position[i].setY(9.5);
             }
-            else if(deam_position[i].getX()  >= 15.0 && deam_position[i].getY() >=10.0)
+            else if(deam_position[i].getX()  >= 14.5 && deam_position[i].getY() >=10.0)
             {
                 deam_position[i].setX(14.0);
                 deam_position[i].setY(9.5);
@@ -328,15 +328,15 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
         }
         else
         {
-            if(deam_position[i].getX()  >= 15.0 && deam_position[i].getY() <=10.0)
+            if(deam_position[i].getX()  >= 14.5 && deam_position[i].getY() <=10.0)
             {
                 deam_position[i].setX(14.0);
             }
-            else if(deam_position[i].getX()  < 15.0 && deam_position[i].getY() <=-10.0)
+            else if(deam_position[i].getX()  < 14.5 && deam_position[i].getY() <=-10.0)
             {
                 deam_position[i].setY(-9.5);
             }
-            else if(deam_position[i].getX()  >= 15.0 && deam_position[i].getY() <=-10.0)
+            else if(deam_position[i].getX()  >= 14.5 && deam_position[i].getY() <=-10.0)
             {
                 deam_position[i].setX(14.0);
                 deam_position[i].setY(-9.5);
