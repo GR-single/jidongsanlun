@@ -163,7 +163,7 @@ SkillType NaoBehavior::selectSkill()
             {
                 if(last_beam[i] == worldModel->getUNum())
                 {
-                    VecPosition target = collisionAvoidance(true,true,false,1,0.5,current_beam[i],true);   //假设Unum为i，则把阵型点集合中第i个坐标点设为相应机器人的目标点
+                    VecPosition target = collisionAvoidance(true,true,true,1,0.5,current_beam[i],true);   //假设Unum为i，则把阵型点集合中第i个坐标点设为相应机器人的目标点
                    
                     if(me.getDistanceTo(target) > 0.25)
                     {
@@ -302,10 +302,10 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
     deam_position.push_back(VecPosition(diXian+3,y,0));
     deam_position.push_back(VecPosition(diXian+2,y+3,0));
     deam_position.push_back(VecPosition(diXian,y+4,0));
-    deam_position.push_back(VecPosition(x-3,y+2,0));
+    deam_position.push_back(VecPosition(x-4,y+2,0));
     deam_position.push_back(VecPosition(x-3,y-2,0));
     deam_position.push_back(VecPosition(x+3,y+2,0));
-    deam_position.push_back(VecPosition(x+3,y-2,0));
+    deam_position.push_back(VecPosition(x+4,y-2,0));
 
     //检测是否越界
     for(int i=0;i<=(int)deam_position.size();i++)
