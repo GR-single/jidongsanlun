@@ -117,13 +117,13 @@ for ((i=1;i<=$NUM_PLAYERS;i++)); do
 	    #"$BINARY_DIR/$AGENT_BINARY" $opt --unum $i --type 1 --paramsfile paramfiles/defaultParams_t1.txt > stdout$i 2> stderr$i &
 	    ;;
 	5|6)
-	    echo "Running agent No. $i -- Type 0"
-	    "$BINARY_DIR/$AGENT_BINARY" $opt --unum $i --type 0 --paramsfile paramfiles/defaultParams_t0.txt &#> /dev/null &
+	    echo "Running agent No. $i -- Type 1"
+	    "$BINARY_DIR/$AGENT_BINARY" $opt --unum $i --type 1 --paramsfile paramfiles/defaultParams_t1.txt &#> /dev/null &
 	    #"$BINARY_DIR/$AGENT_BINARY" $opt --unum $i --type 1 --paramsfile paramfiles/defaultParams_t1.txt > stdout$i 2> stderr$i &
 	    ;;
 	7|8)
-	    echo "Running agent No. $i -- Type 1"
-	    "$BINARY_DIR/$AGENT_BINARY" $opt --unum $i --type 1 --paramsfile paramfiles/defaultParams_t1.txt &#> /dev/null &
+	    echo "Running agent No. $i -- Type 0"
+	    "$BINARY_DIR/$AGENT_BINARY" $opt --unum $i --type 0 --paramsfile paramfiles/defaultParams_t0.txt &#> /dev/null &
 	    #"$BINARY_DIR/$AGENT_BINARY" $opt --unum $i --type 0 --paramsfile paramfiles/defaultParams_t0.txt > stdout$i 2> stderr$i &
 	    ;;
   9|10)

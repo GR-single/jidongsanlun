@@ -462,7 +462,7 @@ void NaoBehavior::tiaoZhengGoal(VecPosition & goal){
 }
 
 bool NaoBehavior::isCanLongKick(int player){
-    return (player!=7&&player!=8&&player!=11);
+    return (player!=5&&player!=6&&player!=11);
 }
 
 //示例阵型
