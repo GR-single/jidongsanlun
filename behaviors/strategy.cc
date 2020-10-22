@@ -19,7 +19,8 @@
 typedef uint64_t uint64;
 
 extern int agentBodyType;
-
+int IsGet1=0;
+int IsGet2=0;
 
 //dacongming
 /*
@@ -202,7 +203,21 @@ SkillType NaoBehavior::kickOff()
 	**************参赛者自己编写*************
 	****************************************/
     if(worldModel->getUNum() == findClosestPlayer2Ball())
-        return kickBall(KICK_IK,VecPosition(-5,5,0));
+    {
+        /*if(me.getDistanceTo(VecPosition(0.5,-0.5,0))>0.1&&IsGet1==0)
+            return goToTarget(VecPosition(0.5,-0.5,0));
+        else if(me.getDistanceTo(VecPosition(1,0,0))>0.1&&IsGet2==0)
+        {
+            IsGet1=1;
+            return goToTarget(VecPosition(1,0,0));
+        }
+        else
+        {
+            IsGet2=1;
+            return kickBall(KICK_FORWARD,VecPosition(-4,6,0));
+        }*/
+        return kickBall(KICK_IK,VecPosition(-4,6,0));
+    }
     else
         return SKILL_STAND;	//示例，站着不动，有需要请自行修改
     }
