@@ -19,9 +19,8 @@
 typedef uint64_t uint64;
 
 extern int agentBodyType;
-//int IsGet1=0;
-//int IsGet2=0;
-//dacongming
+vector<VecPosition> positions;
+vector<int> players;
 /*
  * Real game beaming.
  * Filling params x y angle
@@ -34,64 +33,64 @@ void NaoBehavior::beam( double& beamX, double& beamY, double& beamAngle ) {
         beamY = 0;
         beamAngle = 0;
        }
-    else if(worldModel->getUNum()==WO_TEAMMATE11){
-        beamX = -2.3;
+    else if(worldModel->getUNum()==WO_TEAMMATE10){
+        beamX = -2.2;
         beamY = 0;
         beamAngle = 0;
        }
     else{
         switch(worldModel->getUNum()){
             case WO_TEAMMATE2:{
-                beamX = -12;
-                beamY = -2;
+                beamX = -13;
+                beamY = -3;
                 beamAngle = 0;
                 break;
             }
             case WO_TEAMMATE3:{
-                beamX = -12;
-                beamY = 2;
+                beamX = -13;
+                beamY = 3;
                 beamAngle = 0;
                 break;
             }
             case WO_TEAMMATE4:{
-                beamX = -10;
-                beamY = -4;
+                beamX = -12;
+                beamY = -1.5;
                 beamAngle = 0;
                 break;
             }
             case WO_TEAMMATE5:{
-                beamX = -10;
-                beamY = 4;
+                beamX = -12;
+                beamY = 1.5;
                 beamAngle = 0;
                 break;
             }
             case WO_TEAMMATE6:{
-                beamX = -7;
-                beamY = -5;
+                beamX = -11;
+                beamY = 0;
                 beamAngle = 0;
                 break;
             }
             case WO_TEAMMATE7:{
-                beamX = -7;
-                beamY = 5;
+                beamX = -3.5;
+                beamY = 0;
                 beamAngle = 0;
                 break;
             }
             case WO_TEAMMATE8:{
-                beamX = -4;
-                beamY = -6;
+                beamX = -2;
+                beamY = 2;
                 beamAngle = 0;
                 break;
             }
             case WO_TEAMMATE9:{
-                beamX = -4;
-                beamY = 6;
+                beamX = -2;
+                beamY = -3.5;
                 beamAngle = 0;
                 break;
             }
-            case WO_TEAMMATE10:{
-                beamX = -6;
-                beamY = 0;
+            case WO_TEAMMATE11:{
+                beamX = -1;
+                beamY = -5;
                 beamAngle = 0;
                 break;
             }
@@ -201,35 +200,112 @@ SkillType NaoBehavior::kickOff()
     {
 	/***************************************
 	*******我方开球总体的站位或走位***********
-	**************参赛者自己编写*************
 	****************************************/
-        if(worldModel->getUNum() == findClosestPlayer2Ball())
+        positions.clear();
+        /*以下是球员开球以及进攻时每个球员的站位*/
+        positions.push_back(VecPosition(-14.8,0,0));//1
+        positions.push_back(VecPosition(-12,-4,0));//2
+        positions.push_back(VecPosition(-12,4,0));//3
+        positions.push_back(VecPosition(-10.5,-2.5,0));//4
+        positions.push_back(VecPosition(-10.5,2.5,0));//5
+        positions.push_back(VecPosition(-9.5,0,0));//6
+        positions.push_back(VecPosition(-1,-1.5,0));//7
+        positions.push_back(VecPosition(-0.5,-3,0));//10
+        positions.push_back(VecPosition(-0.5,-4.5,0));//9
+        positions.push_back(VecPosition(-0.5,-6.5,0));//11
+
+        players.clear();
+        /*以下是对应站位的球员编号*/
+        players.push_back(WO_TEAMMATE1);//1
+        players.push_back(WO_TEAMMATE2);//2
+        players.push_back(WO_TEAMMATE3);//3
+        players.push_back(WO_TEAMMATE4);//4
+        players.push_back(WO_TEAMMATE5);//5
+        players.push_back(WO_TEAMMATE6);//6
+        players.push_back(WO_TEAMMATE7);//7
+        players.push_back(WO_TEAMMATE10);//10
+        players.push_back(WO_TEAMMATE9);//9
+        players.push_back(WO_TEAMMATE11);//11
+
+        /*开始走位*/
+        if(worldModel->getUNum()!=WO_TEAMMATE8)
         {
-            /*if(me.getDistanceTo(VecPosition(0.5,-0.5,0))>0.1&&IsGet1==0)
-            return goToTarget(VecPosition(0.5,-0.5,0));
-            else if(me.getDistanceTo(VecPosition(1,0,0))>0.1&&IsGet2==0)
+            for(int i=0;i<(int)players.size();i++)
             {
-                IsGet1=1;
-                return goToTarget(VecPosition(1,0,0));
+                if(players[i] == worldModel->getUNum())
+                {
+                    VecPosition target = collisionAvoidance(true,true,true,1,0.5,positions[i],true);   //假设Unum为i，则把阵型点集合中第i个坐标点设为相应机器人的目标点
+                   
+                    if(me.getDistanceTo(target) > 0.25)
+                    {
+                        // Far away from the ball so walk toward target offset from the ball
+                        return goToTarget(target);
+                    }
+                    //面向球
+                    double rot,dis;
+                    getTargetDistanceAndAngle(ball,dis,rot);    //面向球
+                    return goToTargetRelative(target,rot);
+                }
             }
-            else
-            {
-                IsGet2=1;
-                return kickBall(KICK_FORWARD,VecPosition(-4,6,0));
-            }*/
-            return kickBall(KICK_FORWARD,VecPosition(-4,6,0));
         }
-        else
-        return SKILL_STAND;	//示例，站着不动，有需要请自行修改
+        else 
+        return kickBall(KICK_FORWARD,VecPosition(1,-5,0));
+        
     }
+
     //对方开球
     else if((worldModel->getSide() == SIDE_LEFT && worldModel->getPlayMode() == PM_KICK_OFF_RIGHT) || (worldModel->getSide() == SIDE_RIGHT && worldModel->getPlayMode() == PM_KICK_OFF_LEFT))
     {
 	/***************************************
 	*****对方开球时我方的总体的站位或走位*****
-	**************参赛者自己编写*************
 	****************************************/
-    return SKILL_STAND;	//示例，站着不动，有需要请自行修改
+        positions.clear();
+        /*以下是对面开球以及防守时每个球员的站位*/
+        positions.push_back(VecPosition(-14.8,0,0));//1
+        positions.push_back(VecPosition(-12,-4,0));//2
+        positions.push_back(VecPosition(-12,4,0));//3
+        positions.push_back(VecPosition(-10.5,-2.5,0));//4
+        positions.push_back(VecPosition(-10.5,2.5,0));//5
+        positions.push_back(VecPosition(-9.5,0,0));//6
+        positions.push_back(VecPosition(-1.8,1.8,0));//7
+        positions.push_back(VecPosition(-0.8,2.5,0));//8
+        positions.push_back(VecPosition(-1.8,-1.8,0));//9
+        positions.push_back(VecPosition(-2.5,0,0));//10
+        positions.push_back(VecPosition(-0.8,-2.5,0));//11
+
+        players.clear();
+        /*以下是对应站位的球员编号*/
+        players.push_back(WO_TEAMMATE1);//1
+        players.push_back(WO_TEAMMATE2);//2
+        players.push_back(WO_TEAMMATE3);//3
+        players.push_back(WO_TEAMMATE4);//4
+        players.push_back(WO_TEAMMATE5);//5
+        players.push_back(WO_TEAMMATE6);//6
+        players.push_back(WO_TEAMMATE7);//7
+        players.push_back(WO_TEAMMATE8);//8
+        players.push_back(WO_TEAMMATE9);//9
+        players.push_back(WO_TEAMMATE10);//10
+        players.push_back(WO_TEAMMATE11);//11
+
+        /*开始走位*/
+        for(int i=0;i<(int)players.size();i++)
+            {
+                if(players[i] == worldModel->getUNum())
+                {
+                    VecPosition target = collisionAvoidance(true,true,true,1,0.5,positions[i],true);   //假设Unum为i，则把阵型点集合中第i个坐标点设为相应机器人的目标点
+                   
+                    if(me.getDistanceTo(target) > 0.25)
+                    {
+                        // Far away from the ball so walk toward target offset from the ball
+                        return goToTarget(target);
+                    }
+                    //面向球
+                    double rot,dis;
+                    getTargetDistanceAndAngle(ball,dis,rot);    //面向球
+                    return goToTargetRelative(target,rot);
+                }
+            }
+        
     }
     return SKILL_STAND;
 }
@@ -456,15 +532,3 @@ vector<VecPosition> NaoBehavior::demoMode_2(VecPosition ball)
     }
     return deam_position;
 }
-
-
-
-
-
-
-
-
-
-
-
-
