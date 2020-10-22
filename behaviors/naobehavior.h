@@ -249,6 +249,8 @@ protected:
     int findClosetOpponentToball();
     VecPosition findMidPoint(VecPosition a,VecPosition b);
     void fangShouGuoXian(vector<VecPosition> & a);
+    void tiaoZhengGoal(VecPosition & goal);
+    bool isCanLongKick(int player);
 
     //keeper
     SkillType selectKeeperSkills(VecPosition teammateball,double distance,double angle);

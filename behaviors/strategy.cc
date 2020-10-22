@@ -229,7 +229,7 @@ int NaoBehavior::findClosestPlayer2Ball()
     VecPosition tp;
     int minNum=1;
     double maxDistance=100;
-    for(int i=1;i<12;i++){
+    for(int i=2;i<12;i++){
         if(worldModel->getUNum()==i){
             tp=worldModel->getMyPosition();
         }
@@ -246,12 +246,13 @@ int NaoBehavior::findClosestPlayer2Ball()
 //找到离当前球员最近的队友
 int NaoBehavior::findClosetTeamateToMe(){
     int thisPlayer=worldModel->getUNum();
-    int minNum=1;
+    int minNum=thisPlayer;
     float minDistance=100;
-    for(int i=WO_TEAMMATE1;i<=WO_TEAMMATE11;i++){
+    for(int i=WO_TEAMMATE2;i<=WO_TEAMMATE11;i++){
         if(i!=thisPlayer){
             float tDis=me.getDistanceTo(worldModel->getTeammate(i));
-            if(tDis<minDistance){
+            float x = worldModel->getTeammate(i).getX();
+            if(x>me.getX()&&tDis<minDistance){
                 minNum=i;
                 minDistance=tDis;
             }
@@ -265,7 +266,7 @@ int NaoBehavior::findClosetTeamateToGoal(){
     VecPosition goal = VecPosition(15,0,0);
     int minNum = 1;
     float minDistance = 100;
-    for(int i=WO_TEAMMATE1;i<=WO_TEAMMATE11;i++){
+    for(int i=WO_TEAMMATE11;i>=WO_TEAMMATE5;i--){
         float tDis = worldModel->getTeammate(i).getDistanceTo(goal);
         if(tDis<minDistance){
             minNum=i;
@@ -301,6 +302,15 @@ void NaoBehavior::fangShouGuoXian(vector<VecPosition> & a){
     }
 }
 
+void NaoBehavior::tiaoZhengGoal(VecPosition & goal){
+    goal.setX(goal.getX()+1);
+    goal.setY(goal.getY()-1);
+}
+
+bool NaoBehavior::isCanLongKick(int player){
+    return (player!=7&&player!=8&&player!=11);
+}
+
 //示例阵型
 
 vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
@@ -310,16 +320,17 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
     float x = ball.getX();
     float y = ball.getY();
     float diXian = -10;
-    deam_position.push_back(VecPosition(diXian,y-4,0));
-    deam_position.push_back(VecPosition(diXian+2,y-3,0));
+    deam_position.push_back(VecPosition(diXian,y-5,0));
     deam_position.push_back(VecPosition(diXian+3,y,0));
-    deam_position.push_back(VecPosition(diXian+2,y+3,0));
-    deam_position.push_back(VecPosition(diXian,y+4,0));
+    deam_position.push_back(VecPosition(diXian,y+5,0));
     fangShouGuoXian(deam_position);
-    deam_position.push_back(VecPosition(x-4,y+2,0));
-    deam_position.push_back(VecPosition(x+4,y-4,0));
-    deam_position.push_back(VecPosition(x-3,y-2,0));
-    deam_position.push_back(VecPosition(x+3,y+2,0));
+
+    deam_position.push_back(VecPosition(x-3,y-3,0));
+    deam_position.push_back(VecPosition(x+1,y+4,0));   
+    deam_position.push_back(VecPosition(x+4,y+2,0));
+    deam_position.push_back(VecPosition(x+3,y-2,0));
+    deam_position.push_back(VecPosition(12.5,-7.5,0));
+    deam_position.push_back(VecPosition(x-5,y,0));
     
 
     //检测是否越界
