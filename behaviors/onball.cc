@@ -18,12 +18,6 @@ SkillType NaoBehavior::onball()
     VecPosition cttg=worldModel->getTeammate(findClosetTeamateToGoal());//离球门最近的队友
     VecPosition cttm=worldModel->getTeammate(findClosetTeamateToMe());//离当前球员最近的队友
     //VecPosition cotb=worldModel->getOpponent(findClosetOpponentToball());//离球最近的对手球员
-    if(worldModel->getOpponent(WO_OPPONENT1).getY()>0){//根据守门员的位置判断射上半球门或下半球门
-      goal.setY(goal.getY()-0.3);
-    }
-    else{
-      goal.setY(goal.getY()+0.3);
-    }
     
     if(isCanLongKick(thisPlayer)){
       shootDistance=10;
