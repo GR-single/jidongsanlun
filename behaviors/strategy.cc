@@ -19,9 +19,8 @@
 typedef uint64_t uint64;
 
 extern int agentBodyType;
-int IsGet1=0;
-int IsGet2=0;
-
+//int IsGet1=0;
+//int IsGet2=0;
 //dacongming
 /*
  * Real game beaming.
@@ -108,6 +107,8 @@ SkillType NaoBehavior::selectSkill()
     //示例，有需要请自行修改
     //worldModel->getRVSender()->clear(); // erases drawings from previous cycle
     //worldModel->getRVSender()->clearStaticDrawings();
+
+
     int Nearest2ball = findClosestPlayer2Ball();
     double distance,angle;
     getTargetDistanceAndAngle(ball,distance,angle);
@@ -202,23 +203,23 @@ SkillType NaoBehavior::kickOff()
 	*******我方开球总体的站位或走位***********
 	**************参赛者自己编写*************
 	****************************************/
-    if(worldModel->getUNum() == findClosestPlayer2Ball())
-    {
-        /*if(me.getDistanceTo(VecPosition(0.5,-0.5,0))>0.1&&IsGet1==0)
-            return goToTarget(VecPosition(0.5,-0.5,0));
-        else if(me.getDistanceTo(VecPosition(1,0,0))>0.1&&IsGet2==0)
+        if(worldModel->getUNum() == findClosestPlayer2Ball())
         {
-            IsGet1=1;
-            return goToTarget(VecPosition(1,0,0));
+            /*if(me.getDistanceTo(VecPosition(0.5,-0.5,0))>0.1&&IsGet1==0)
+            return goToTarget(VecPosition(0.5,-0.5,0));
+            else if(me.getDistanceTo(VecPosition(1,0,0))>0.1&&IsGet2==0)
+            {
+                IsGet1=1;
+                return goToTarget(VecPosition(1,0,0));
+            }
+            else
+            {
+                IsGet2=1;
+                return kickBall(KICK_FORWARD,VecPosition(-4,6,0));
+            }*/
+            return kickBall(KICK_FORWARD,VecPosition(-4,6,0));
         }
         else
-        {
-            IsGet2=1;
-            return kickBall(KICK_FORWARD,VecPosition(-4,6,0));
-        }*/
-        return kickBall(KICK_IK,VecPosition(-4,6,0));
-    }
-    else
         return SKILL_STAND;	//示例，站着不动，有需要请自行修改
     }
     //对方开球
