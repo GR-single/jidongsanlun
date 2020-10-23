@@ -25,7 +25,18 @@ SkillType NaoBehavior::onball()
     else{
       shootDistance=6;
     }
-    
+    if(ball.getX()<0&&ball.getX()>-3){
+      return kickBall(KICK_DRIBBLE,VecPosition(12,-7.5,0));
+    }
+    if(ball.getX()<-3){
+      return LongKick(VecPosition(12,-7.5,0));
+    }
+    if(worldModel->getOpponent(WO_OPPONENT1).getY()>0){
+      goal.setY(goal.getY()-0.3);
+    }
+    else{
+      goal.setY(goal.getY()+0.3);
+    }
     //判断是否射门
     if(me.getDistanceTo(goal)<shootDistance){
       return LongKick(goal);
@@ -43,7 +54,7 @@ SkillType NaoBehavior::onball()
         return LongKick(canShootTV);
       }
       if(me.getDistanceTo(cotb)<1.5){
-        tempGoal=collisionAvoidance(true,true,false,1,0.5,canShootTV,true);
+        tempGoal=collisionAvoidance(true,true,false,1,1,canShootTV,true);
         return kickBall(KICK_DRIBBLE,tempGoal);
       }
     }
@@ -60,11 +71,11 @@ SkillType NaoBehavior::onball()
         return LongKick(cttg);
       }
       if(me.getDistanceTo(cotb)<1.5){
-        tempGoal=collisionAvoidance(true,true,false,1,0.5,cttg,true);
+        tempGoal=collisionAvoidance(true,true,false,1,1,cttg,true);
         return kickBall(KICK_DRIBBLE,tempGoal);
       }
     }
-    tempGoal=collisionAvoidance(true,true,false,1,0.5,cttg,true);
+    tempGoal=collisionAvoidance(true,true,false,1,1,cttg,true);
     return kickBall(KICK_DRIBBLE,tempGoal);
       
       

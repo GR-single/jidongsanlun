@@ -164,7 +164,7 @@ SkillType NaoBehavior::selectSkill()
             {
                 if(last_beam[i] == worldModel->getUNum())
                 {
-                    VecPosition target = collisionAvoidance(true,true,true,1,0.5,current_beam[i],true);   //假设Unum为i，则把阵型点集合中第i个坐标点设为相应机器人的目标点
+                    VecPosition target = collisionAvoidance(true,true,false,1,0.5,current_beam[i],true);   //假设Unum为i，则把阵型点集合中第i个坐标点设为相应机器人的目标点
                    
                     if(me.getDistanceTo(target) > 0.25)
                     {
@@ -390,11 +390,12 @@ int NaoBehavior::findClosestPlayer2Ball()
         else{
             tp=worldModel->getTeammate(i);
         }
-        if(tp.getDistanceTo(worldModel->getBall())<maxDistance){
+        if(!worldModel->getFallenTeammate(i)&&tp.getDistanceTo(worldModel->getBall())<maxDistance){
             minNum=i;
             maxDistance=tp.getDistanceTo(worldModel->getBall());
         }
     }
+    
     return minNum;	//示例，返回11号，有需要请自行修改；
 }
 //找到离当前球员最近的队友
@@ -495,18 +496,33 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
     deam_position.clear();
     float x = ball.getX();
     float y = ball.getY();
+    VecPosition getonball = worldModel->getTeammate(findClosestPlayer2Ball());
+    float tx=getonball.getX();
+    float ty=getonball.getY();
     float diXian = -10;
     deam_position.push_back(VecPosition(diXian,y-5,0));
     deam_position.push_back(VecPosition(diXian+3,y,0));
     deam_position.push_back(VecPosition(diXian,y+5,0));
-    fangShouGuoXian(deam_position);
-
-    deam_position.push_back(VecPosition(x+1,y+2,0));
-    deam_position.push_back(VecPosition(x-1,y-3,0));   
-    deam_position.push_back(VecPosition(x+4,y+2,0));
-    deam_position.push_back(VecPosition(x+3,y-2,0));
-    deam_position.push_back(VecPosition(11.5,-7.5,0));
-    deam_position.push_back(VecPosition(x-5,y,0));
+    deam_position.push_back(VecPosition(tx-1,ty+1.5,0));
+    deam_position.push_back(VecPosition(tx-1,ty-1.5,0));   
+    deam_position.push_back(VecPosition(tx+3,ty+3,0));
+    deam_position.push_back(VecPosition(tx+4,ty-3,0));
+    deam_position.push_back(VecPosition(12,-7.5,0));
+    deam_position.push_back(VecPosition(tx-5,ty,0));
+    if(!isGetBall()){
+        deam_position[4]=ball;
+    }
+    
+    //围圈
+    // deam_position.push_back(VecPosition(diXian,y-3,0));
+    // deam_position.push_back(VecPosition(diXian,y+3,0));
+    // deam_position.push_back(VecPosition(x-1.5,y-1,0));
+    // deam_position.push_back(VecPosition(x,y+1.5,0));
+    // deam_position.push_back(VecPosition(x+1.5,y,0));   
+    // deam_position.push_back(VecPosition(x,y-1.5,0));
+    // deam_position.push_back(VecPosition(x+6,7.5,0));
+    // deam_position.push_back(VecPosition(x+6,-7.5,0));
+    // deam_position.push_back(VecPosition(x-1.5,y+1,0));
     
 
     //检测是否越界
