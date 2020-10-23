@@ -68,14 +68,54 @@ beam( double& beamX, double& beamY, double& beamAngle ) {
 
 SkillType PKShooterBehavior::
 selectSkill() {
-    VecPosition center=VecPosition(15,0.5, 0);
+    //获得守门员位置信息
+    WorldObject* opponent=worldModel->getWorldObject(WO_OPPONENT1);
 
-    double distance=ball.getDistanceTo(center);;
-    if(ball.getX()<5)
-    return kickBall(KICK_IK,center);
-    else if(ball.getX()<10)
-    return kickBall(KICK_DRIBBLE,center);
-    else
-    return kickBall(7,center);
+    //判断球员的击球位置
+    double middle;//击球位置
+    if(opponent->pos.getY()>=0&&ball.getY()<=opponent->pos.getY()){
+        middle=-0.9;
+    }else if(opponent->pos.getY()>=0&&ball.getY()>opponent->pos.getY()){
+        middle=0.9;
+    }else if(opponent->pos.getY()<0&&ball.getY()<=opponent->pos.getY()){
+        middle=-0.9;
+    }else{
+        middle=0.9;
+    }
+
+
+    /*double middle;//第二种可行办法
+        if(opponent->pos.getY()>=0){
+            middle=-0.8;
+        }else{
+            middle=0.8;
+        }*/
+
+    //一些球场位置的定义
+    VecPosition target_begin(HALF_FIELD_X,0,0);//足球起始位置
+    VecPosition target(HALF_FIELD_X,middle,0);//目标击球点
+    VecPosition temptarget_begin(0,0,0);//长踢目标点
+    VecPosition temptarget_end(11.8,0,0);//球员击球点
+    int changchuan=0;
+
+    //判断球员在不同位置下的不同运球状态
+    if(ball.getDistanceTo(temptarget_begin)<=0.5){//两个长踢节省路上时间
+        return kickBall(KICK_IK,target_begin);
+    }
+    else if(ball.getDistanceTo(temptarget_end)>0.5&&ball.getDistanceTo(temptarget_end)>5){//两个长踢节省路上时间
+        return kickBall(KICK_IK,target_begin);
+    }
+    else if(ball.getDistanceTo(temptarget_end)<0.5){//到达击球点
+        return kickBall(KICK_FORWARD,target);
+    }
+    else if(ball.getX()>13.8&&ball.getY()<3&&ball.getY()>-3){//在禁区不做行动
+        return SKILL_STAND;
+    }
+    else{                                               //带球
+        if(ball.getDistanceTo(me)<0.2)
+            return kickBall(KICK_DRIBBLE,temptarget_end);
+        else
+            return goToTarget(ball);
+    }
 
 }
