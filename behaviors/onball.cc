@@ -25,6 +25,9 @@ SkillType NaoBehavior::onball()
     else{
       shootDistance=6;
     }
+    if(me.getDistanceTo(ball)>0.8){
+      return goToTarget(collisionAvoidance(true,true,false,1,0.5,ball,true));
+    }
     //判断是否射门
     if(me.getDistanceTo(goal)<shootDistance){
       return LongKick(goal);
@@ -43,7 +46,7 @@ SkillType NaoBehavior::onball()
 
     //判断是否向离得近的队友传球
     if(thisPlayer==findClosetTeamateToMe()){
-
+      
     }
     else{
       if(me.getDistanceTo(cttm)<6){
@@ -53,7 +56,12 @@ SkillType NaoBehavior::onball()
         return LongKick(cttm);
       }
     }
+    tempGoal=collisionAvoidance(true,true,false,1,0.5,tempGoal,true);
     return kickBall(KICK_DRIBBLE,tempGoal);
+      
+      
+    
+    
     
 
     
