@@ -54,7 +54,7 @@ PKShooterBehavior( const std::string teamName,
                    const map<string, string>& namedParams_,
                    const string& rsg_ )
     : NaoBehavior( teamName,
-                   uNum,
+                   uNum=11,
                    namedParams_,
                    rsg_ ) {
 }
@@ -105,17 +105,17 @@ selectSkill() {
     else if(ball.getDistanceTo(temptarget_end)>0.5&&ball.getDistanceTo(temptarget_end)>5){//两个长踢节省路上时间
         return kickBall(KICK_IK,target_begin);
     }
-    else if(ball.getDistanceTo(temptarget_end)<0.5){//到达击球点
+    else if(ball.getDistanceTo(temptarget_end)<0.6){//到达击球点
         return kickBall(KICK_FORWARD,target);
     }
     else if(ball.getX()>13.8&&ball.getY()<3&&ball.getY()>-3){//在禁区不做行动
         return SKILL_STAND;
     }
     else{                                               //带球
-        if(ball.getDistanceTo(me)<0.2)
+        //if(ball.getDistanceTo(me)<0.2)
             return kickBall(KICK_DRIBBLE,temptarget_end);
-        else
-            return goToTarget(ball);
+        //else
+            //return goToTarget(ball);
     }
 
 }
