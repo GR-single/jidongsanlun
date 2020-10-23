@@ -247,11 +247,12 @@ protected:
     int findClosetTeamateToMe();
     int findClosetTeamateToGoal();
     int findClosetOpponentToball();
+    int findCanShootTeamate();
     VecPosition findMidPoint(VecPosition a,VecPosition b);
     void fangShouGuoXian(vector<VecPosition> & a);
     void tiaoZhengGoal(VecPosition & goal);
     bool isCanLongKick(int player);
-
+    bool isGetBall();
     //keeper
     SkillType selectKeeperSkills(VecPosition teammateball,double distance,double angle);
     SkillType goBack(VecPosition myPos,double deg);

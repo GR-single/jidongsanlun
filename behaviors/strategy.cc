@@ -271,7 +271,7 @@ SkillType NaoBehavior::kickOff()
             positions.push_back(VecPosition(-2,2,0));//11
             positions.push_back(VecPosition(-2.2,0,0));//10
             positions.push_back(VecPosition(-1,-1,0));//7
-            positions.push_back(VecPosition(-2,-3.5,0));//9
+            positions.push_back(VecPosition(-1.5,-5.5,0));//9
             positions.push_back(VecPosition(-0.5,-6.5,0));//8
 
             players.clear();
@@ -285,7 +285,7 @@ SkillType NaoBehavior::kickOff()
             players.push_back(WO_TEAMMATE10);//10
             players.push_back(WO_TEAMMATE7);//7
             players.push_back(WO_TEAMMATE9);//9
-            players.push_back(WO_TEAMMATE11);//8
+            players.push_back(WO_TEAMMATE8);//8
 
             /*开始走位*/
             if(worldModel->getUNum()!=WO_TEAMMATE6)
@@ -418,7 +418,7 @@ int NaoBehavior::findClosetTeamateToMe(){
 //找到离对面球门最近的队友
 int NaoBehavior::findClosetTeamateToGoal(){
     VecPosition goal = VecPosition(15,0,0);
-    int minNum = 1;
+    int minNum = 10;
     float minDistance = 100;
     for(int i=WO_TEAMMATE11;i>=WO_TEAMMATE5;i--){
         float tDis = worldModel->getTeammate(i).getDistanceTo(goal);
@@ -428,6 +428,19 @@ int NaoBehavior::findClosetTeamateToGoal(){
         }
     }
     return minNum;
+}
+//找到能射门的队友
+int NaoBehavior::findCanShootTeamate(){
+    float shootDistance=6;
+    for(int i=WO_TEAMMATE11;i>=WO_TEAMMATE2;i--){
+        if(isCanLongKick(i)){
+            shootDistance=10;
+        }
+        if(worldModel->getTeammate(i).getDistanceTo(VecPosition(15,0,0))<=shootDistance){
+            return i;
+        }
+    }
+    return 0;
 }
 //找到对手离球最近的球员
 int NaoBehavior::findClosetOpponentToball(){
@@ -465,6 +478,15 @@ bool NaoBehavior::isCanLongKick(int player){
     return (player!=5&&player!=6&&player!=11);
 }
 
+bool NaoBehavior::isGetBall(){
+    VecPosition woOnBall=worldModel->getTeammate(findClosestPlayer2Ball());
+    VecPosition diOnBall=worldModel->getOpponent(findClosetOpponentToball());
+    if(woOnBall.getDistanceTo(ball)<diOnBall.getDistanceTo(ball)){
+        return true;
+    }
+    return false;
+
+}
 //示例阵型
 
 vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
@@ -479,11 +501,11 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
     deam_position.push_back(VecPosition(diXian,y+5,0));
     fangShouGuoXian(deam_position);
 
-    deam_position.push_back(VecPosition(x-3,y-3,0));
-    deam_position.push_back(VecPosition(x+1,y+4,0));   
+    deam_position.push_back(VecPosition(x+1,y+2,0));
+    deam_position.push_back(VecPosition(x-1,y-3,0));   
     deam_position.push_back(VecPosition(x+4,y+2,0));
     deam_position.push_back(VecPosition(x+3,y-2,0));
-    deam_position.push_back(VecPosition(12.5,-7.5,0));
+    deam_position.push_back(VecPosition(11.5,-7.5,0));
     deam_position.push_back(VecPosition(x-5,y,0));
     
 

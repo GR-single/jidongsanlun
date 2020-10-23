@@ -17,46 +17,54 @@ SkillType NaoBehavior::onball()
     VecPosition tempGoal=VecPosition(10,-5,0);
     VecPosition cttg=worldModel->getTeammate(findClosetTeamateToGoal());//离球门最近的队友
     VecPosition cttm=worldModel->getTeammate(findClosetTeamateToMe());//离当前球员最近的队友
-    //VecPosition cotb=worldModel->getOpponent(findClosetOpponentToball());//离球最近的对手球员
-    
+    VecPosition cotb=worldModel->getOpponent(findClosetOpponentToball());//离球最近的对手球员
+    int canShootT=findCanShootTeamate();//可以射门的队友编号
     if(isCanLongKick(thisPlayer)){
       shootDistance=10;
     }
     else{
       shootDistance=6;
     }
-    if(me.getDistanceTo(ball)>0.8){
-      return goToTarget(collisionAvoidance(true,true,false,1,0.5,ball,true));
-    }
+    
     //判断是否射门
     if(me.getDistanceTo(goal)<shootDistance){
       return LongKick(goal);
     }
-    
+
+    if(canShootT!=0){
+      VecPosition canShootTV=worldModel->getTeammate(canShootT);//可以射门的队友
+      if(me.getDistanceTo(canShootTV)<4){
+        return ShortKick(canShootTV);
+      }
+      else if(me.getDistanceTo(canShootTV)<8){
+        return kickBall(KICK_FORWARD,canShootTV);
+      }
+      else if(me.getDistanceTo(canShootTV)<11&&isCanLongKick(thisPlayer)){
+        return LongKick(canShootTV);
+      }
+      if(me.getDistanceTo(cotb)<1.5){
+        tempGoal=collisionAvoidance(true,true,false,1,0.5,canShootTV,true);
+        return kickBall(KICK_DRIBBLE,tempGoal);
+      }
+    }
+
     //判断是否向离球门最近的队友传球
     if(thisPlayer!=findClosetTeamateToGoal()){
-      if(me.getDistanceTo(cttg)<6){
+      if(me.getDistanceTo(cttg)<4){
+        return ShortKick(cttg);
+      }
+      else if(me.getDistanceTo(cttg)<8){
         return kickBall(KICK_FORWARD,cttg);
       }
-      else if(me.getDistanceTo(cttg)<10&&isCanLongKick(thisPlayer)){
+      else if(me.getDistanceTo(cttg)<11&&isCanLongKick(thisPlayer)){
         return LongKick(cttg);
       }
-    }
-    
-
-    //判断是否向离得近的队友传球
-    if(thisPlayer==findClosetTeamateToMe()){
-      
-    }
-    else{
-      if(me.getDistanceTo(cttm)<6){
-        return kickBall(KICK_FORWARD,cttm);
-      }
-      else if(me.getDistanceTo(cttm)<10&&isCanLongKick(thisPlayer)) {
-        return LongKick(cttm);
+      if(me.getDistanceTo(cotb)<1.5){
+        tempGoal=collisionAvoidance(true,true,false,1,0.5,cttg,true);
+        return kickBall(KICK_DRIBBLE,tempGoal);
       }
     }
-    tempGoal=collisionAvoidance(true,true,false,1,0.5,tempGoal,true);
+    tempGoal=collisionAvoidance(true,true,false,1,0.5,cttg,true);
     return kickBall(KICK_DRIBBLE,tempGoal);
       
       
