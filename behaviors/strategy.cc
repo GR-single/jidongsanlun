@@ -390,7 +390,7 @@ int NaoBehavior::findClosestPlayer2Ball()
         else{
             tp=worldModel->getTeammate(i);
         }
-        if(!worldModel->getFallenTeammate(i)&&tp.getDistanceTo(worldModel->getBall())<maxDistance){
+        if(!worldModel->getFallenTeammate(i)&&tp.getDistanceTo(ball)<maxDistance){
             minNum=i;
             maxDistance=tp.getDistanceTo(worldModel->getBall());
         }
@@ -419,16 +419,23 @@ int NaoBehavior::findClosetTeamateToMe(){
 //找到离对面球门最近的队友
 int NaoBehavior::findClosetTeamateToGoal(){
     VecPosition goal = VecPosition(15,0,0);
-    int minNum = 10;
-    float minDistance = 100;
-    for(int i=WO_TEAMMATE11;i>=WO_TEAMMATE5;i--){
-        float tDis = worldModel->getTeammate(i).getDistanceTo(goal);
-        if(tDis<minDistance){
-            minNum=i;
-            minDistance=tDis;
+    int maxNum = 10;
+    // float minDistance = 100;
+    float tx=-15;
+    for(int i=WO_TEAMMATE11;i>=WO_TEAMMATE2;i--){
+        // float tDis = worldModel->getTeammate(i).getDistanceTo(goal);
+        // if(tDis<minDistance){
+        //     minNum=i;
+        //     minDistance=tDis;
+        // }
+        float x=worldModel->getTeammate(i).getX();
+        if(x>tx){
+            maxNum=i;
+            tx=x;
         }
+
     }
-    return minNum;
+    return maxNum;
 }
 //找到能射门的队友
 int NaoBehavior::findCanShootTeamate(){
@@ -500,6 +507,16 @@ bool NaoBehavior::isGetBall(){
 }
 //示例阵型
 
+bool NaoBehavior::isDrible(){
+    int count=0;
+    for(int i=WO_OPPONENT2;i<WO_OPPONENT11;i++){
+        if(me.getDistanceTo(worldModel->getOpponent(i))<1.5){
+            count++;
+        }
+    }
+    return count>=2;
+}
+
 vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
 {
     //示例，有需要请自行修改
@@ -515,12 +532,12 @@ vector<VecPosition> NaoBehavior::demoMode_1(VecPosition ball)
     deam_position.push_back(VecPosition(diXian,y+5,0));
     deam_position.push_back(VecPosition(tx-1,ty+1.5,0));
     deam_position.push_back(VecPosition(tx-1,ty-1.5,0));   
-    deam_position.push_back(VecPosition(tx+3,ty+3,0));
-    deam_position.push_back(VecPosition(tx+4,ty-3,0));
+    deam_position.push_back(VecPosition(x+3,y+3,0));
+    deam_position.push_back(VecPosition(x+4,y-3,0));
     deam_position.push_back(VecPosition(12,-7.5,0));
     deam_position.push_back(VecPosition(tx-5,ty,0));
     if(!isGetBall()){
-        deam_position[4]=ball;
+        deam_position[3]=ball;
     }
     
     //围圈

@@ -254,7 +254,7 @@ protected:
     void tiaoZhengGoal(VecPosition & goal);
     bool isCanLongKick(int player);
     bool isGetBall();
-
+    bool isDrible();
     //keeper
     SkillType selectKeeperSkills(VecPosition teammateball,double distance,double angle);
     SkillType goBack(VecPosition myPos,double deg);
