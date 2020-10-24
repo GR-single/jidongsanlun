@@ -25,39 +25,54 @@ SkillType NaoBehavior::onball()
     else{
       shootDistance=6;
     }
-    if(ball.getX()<0&&ball.getX()>-3){
-      return kickBall(KICK_DRIBBLE,VecPosition(12,-7.5,0));
-    }
-    if(ball.getX()<-3){
-      return LongKick(VecPosition(12,-7.5,0));
-    }
-    if(worldModel->getOpponent(WO_OPPONENT1).getY()>0){
-      goal.setY(goal.getY()-0.3);
-    }
-    else{
-      goal.setY(goal.getY()+0.3);
-    }
+    // if(ball.getX()<0&&ball.getX()>-3){
+    //   tempGoal=collisionAvoidance(true,true,false,1,1,cttg,true);
+    //   return kickBall(KICK_DRIBBLE,VecPosition(12,-7.5,0));
+    // }
+    // if(ball.getX()<-3){
+    //   return LongKick(VecPosition(12,-7.5,0));
+    // }
+    // if(worldModel->getOpponent(WO_OPPONENT1).getY()>0){
+    //   goal.setY(goal.getY()-0.3);
+    // }
+    // else{
+    //   goal.setY(goal.getY()+0.3);
+    // }
     //判断是否射门
-    if(me.getDistanceTo(goal)<shootDistance){
+    
+
+
+    if(isDrible()){
+      if(isGetBall()){
+        tempGoal=collisionAvoidance(true,true,false,1,0.5,goal,true);
+      }
+      else{
+        tempGoal=goal;
+      }
+      return kickBall(KICK_DRIBBLE,tempGoal);
+    }else if(me.getDistanceTo(goal)<shootDistance){
       return LongKick(goal);
     }
 
-    if(canShootT!=0){
-      VecPosition canShootTV=worldModel->getTeammate(canShootT);//可以射门的队友
-      if(me.getDistanceTo(canShootTV)<4){
-        return ShortKick(canShootTV);
-      }
-      else if(me.getDistanceTo(canShootTV)<8){
-        return kickBall(KICK_FORWARD,canShootTV);
-      }
-      else if(me.getDistanceTo(canShootTV)<11&&isCanLongKick(thisPlayer)){
-        return LongKick(canShootTV);
-      }
-      if(me.getDistanceTo(cotb)<1.5){
-        tempGoal=collisionAvoidance(true,true,false,1,1,canShootTV,true);
-        return kickBall(KICK_DRIBBLE,tempGoal);
-      }
+    if(ball.getX()<0&&findHowmanydiinourhalf()>=6){
+      return LongKick();
     }
+    // if(canShootT!=0){
+    //   VecPosition canShootTV=worldModel->getTeammate(canShootT);//可以射门的队友
+    //   if(me.getDistanceTo(canShootTV)<4){
+    //     return ShortKick(canShootTV);
+    //   }
+    //   else if(me.getDistanceTo(canShootTV)<8){
+    //     return kickBall(KICK_FORWARD,canShootTV);
+    //   }
+    //   else if(me.getDistanceTo(canShootTV)<11&&isCanLongKick(thisPlayer)){
+    //     return LongKick(canShootTV);
+    //   }
+    //   if(me.getDistanceTo(cotb)<1.5){
+    //     tempGoal=collisionAvoidance(true,true,false,1,1,canShootTV,true);
+    //     return kickBall(KICK_DRIBBLE,tempGoal);
+    //   }
+    // }
 
     //判断是否向离球门最近的队友传球
     if(thisPlayer!=findClosetTeamateToGoal()){
@@ -71,11 +86,11 @@ SkillType NaoBehavior::onball()
         return LongKick(cttg);
       }
       if(me.getDistanceTo(cotb)<1.5){
-        tempGoal=collisionAvoidance(true,true,false,1,1,cttg,true);
+        tempGoal=collisionAvoidance(true,true,false,1,1,goal,true);
         return kickBall(KICK_DRIBBLE,tempGoal);
       }
     }
-    tempGoal=collisionAvoidance(true,true,false,1,1,cttg,true);
+    tempGoal=collisionAvoidance(true,true,false,1,1,VecPosition(12,-7.5,0),true);
     return kickBall(KICK_DRIBBLE,tempGoal);
       
       
