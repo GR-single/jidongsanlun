@@ -64,31 +64,31 @@ void NaoBehavior::beam( double& beamX, double& beamY, double& beamAngle ) {
                 beamAngle = 0;
                 break;
             }
-            case WO_TEAMMATE6:{
+            case WO_TEAMMATE11:{
                 beamX = -2;
                 beamY = 2;
                 beamAngle = 0;
                 break;
             }
-            case WO_TEAMMATE10:{
+            case WO_TEAMMATE9:{
                 beamX = -3.5;
                 beamY = 0;
                 beamAngle = 0;
                 break;
             }
-            case WO_TEAMMATE8:{
+            case WO_TEAMMATE6:{
                 beamX = -1;
                 beamY =-5;
                 beamAngle = 0;
                 break;
             }
-            case WO_TEAMMATE9:{
+            case WO_TEAMMATE10:{
                 beamX = -2;
                 beamY = -3.5;
                 beamAngle = 0;
                 break;
             }
-            case WO_TEAMMATE11:{
+            case WO_TEAMMATE8:{
                 beamX = -6;
                 beamY = 2.7;
                 beamAngle = 0;
@@ -202,12 +202,14 @@ SkillType NaoBehavior::kickOff()
 	*******我方开球总体的站位或走位***********
 	****************************************/
         int OpponentNum=0;
+        if(OpponentNum!=0)
+        OpponentNum=0;
         for(int i=1;i<12;i++)
         {
             if(ball.getDistanceTo(worldModel->getOpponent(i))<2.8)
             OpponentNum++;
         }
-        if(OpponentNum<=2)
+        if(OpponentNum<3)
         {
             positions.clear();
             /*以下是球员开球以及进攻时每个球员的站位*/
@@ -216,11 +218,11 @@ SkillType NaoBehavior::kickOff()
             positions.push_back(VecPosition(-13.5,2.5,0));//3
             positions.push_back(VecPosition(-11,0,0));//4
             positions.push_back(VecPosition(-2,-7,0));//5
-            positions.push_back(VecPosition(-2,2,0));//11
-            positions.push_back(VecPosition(-1,-1.5,0));//10
+            positions.push_back(VecPosition(-2,2,0));//8
+            positions.push_back(VecPosition(-1,-1.5,0));//9
             positions.push_back(VecPosition(-0.5,-3,0));//7
-            positions.push_back(VecPosition(-0.5,-4.5,0));//9
-            positions.push_back(VecPosition(-0.5,-6.5,0));//8
+            positions.push_back(VecPosition(-0.5,-4.5,0));//10
+            positions.push_back(VecPosition(-0.5,-6.5,0));//6
 
             players.clear();
             /*以下是对应站位的球员编号*/
@@ -229,14 +231,14 @@ SkillType NaoBehavior::kickOff()
             players.push_back(WO_TEAMMATE3);//3
             players.push_back(WO_TEAMMATE4);//4
             players.push_back(WO_TEAMMATE5);//5
-            players.push_back(WO_TEAMMATE11);//11
-            players.push_back(WO_TEAMMATE10);//10
-            players.push_back(WO_TEAMMATE7);//7
-            players.push_back(WO_TEAMMATE9);//9
             players.push_back(WO_TEAMMATE8);//8
+            players.push_back(WO_TEAMMATE9);//9
+            players.push_back(WO_TEAMMATE7);//7
+            players.push_back(WO_TEAMMATE10);//10
+            players.push_back(WO_TEAMMATE6);//6
 
             /*开始走位*/
-            if(worldModel->getUNum()!=WO_TEAMMATE6)
+            if(worldModel->getUNum()!=WO_TEAMMATE11)
             {
                 for(int i=0;i<(int)players.size();i++)
                 {
@@ -256,8 +258,12 @@ SkillType NaoBehavior::kickOff()
                     }
                 }
             }
+            /*else if(worldModel->getTeammate(WO_OPPONENT9).getDistanceTo(ball)>0.3)
+            {
+                return goToTarget(VecPosition(0,0.5,0));
+            }*/
             else 
-            return kickBall(KICK_FORWARD,VecPosition(1,-5,0));
+            return kickBall(KICK_FORWARD,VecPosition(7.5,-7.5,0));
         }
         else
         {
@@ -268,11 +274,11 @@ SkillType NaoBehavior::kickOff()
             positions.push_back(VecPosition(-13.5,2.5,0));//3
             positions.push_back(VecPosition(-11,0,0));//4
             positions.push_back(VecPosition(-2,-7,0));//5
-            positions.push_back(VecPosition(-2,2,0));//11
-            positions.push_back(VecPosition(-2.2,0,0));//10
+            positions.push_back(VecPosition(-2,2,0));//8
+            positions.push_back(VecPosition(-2.2,0,0));//9
             positions.push_back(VecPosition(-1,-1,0));//7
-            positions.push_back(VecPosition(-1.5,-5.5,0));//9
-            positions.push_back(VecPosition(-0.5,-6.5,0));//8
+            positions.push_back(VecPosition(-1.5,-5.5,0));//10
+            positions.push_back(VecPosition(-0.5,-6.5,0));//6
 
             players.clear();
             /*以下是对应站位的球员编号*/
@@ -281,14 +287,14 @@ SkillType NaoBehavior::kickOff()
             players.push_back(WO_TEAMMATE3);//3
             players.push_back(WO_TEAMMATE4);//4
             players.push_back(WO_TEAMMATE5);//5
-            players.push_back(WO_TEAMMATE11);//11
-            players.push_back(WO_TEAMMATE10);//10
-            players.push_back(WO_TEAMMATE7);//7
-            players.push_back(WO_TEAMMATE9);//9
             players.push_back(WO_TEAMMATE8);//8
+            players.push_back(WO_TEAMMATE9);//9
+            players.push_back(WO_TEAMMATE7);//7
+            players.push_back(WO_TEAMMATE10);//10
+            players.push_back(WO_TEAMMATE6);//6
 
             /*开始走位*/
-            if(worldModel->getUNum()!=WO_TEAMMATE6)
+            if(worldModel->getUNum()!=WO_TEAMMATE11)
             {
                 for(int i=0;i<(int)players.size();i++)
                 {
@@ -308,8 +314,12 @@ SkillType NaoBehavior::kickOff()
                     }
                 }
             }
+            /*else if(worldModel->getTeammate(WO_OPPONENT11).getDistanceTo(ball)>0.3)
+            {
+                return goToTarget(VecPosition(0,0.2,0));
+            }*/
             else 
-            return kickBall(KICK_FORWARD,VecPosition(-0.8,-4,0));
+            return kickBall(KICK_FORWARD,VecPosition(-0.1,-5,0));
         }
         
         
@@ -328,12 +338,12 @@ SkillType NaoBehavior::kickOff()
         positions.push_back(VecPosition(-13.5,2,0));//3
         positions.push_back(VecPosition(-5.5,0,0));//4
         positions.push_back(VecPosition(-4,-4.5,0));//5
-        positions.push_back(VecPosition(-0.8,2.5,0));//6
+        positions.push_back(VecPosition(-0.8,-2.5,0));//6
         positions.push_back(VecPosition(-2.5,0,0));//7
-        positions.push_back(VecPosition(-0.8,-2.5,0));//8
-        positions.push_back(VecPosition(-1.8,-1.8,0));//9
-        positions.push_back(VecPosition(-1.8,1.8,0));//10
-        positions.push_back(VecPosition(-4,4.5,0));//11
+        positions.push_back(VecPosition(-4,4.5,0));//8
+        positions.push_back(VecPosition(-1.8,1.8,0));//9
+        positions.push_back(VecPosition(-1.8,-1.8,0));//11
+        positions.push_back(VecPosition(-0.8,2.5,0));//10
 
         players.clear();
         /*以下是对应站位的球员编号*/
